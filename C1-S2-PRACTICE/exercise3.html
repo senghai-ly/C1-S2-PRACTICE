@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto; 
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            width: 100%; 
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border: 1px solid #007bff;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; 
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-direction: column; 
+            gap: 10px;
+            width: 100%; 
+            margin-top: -8px;
+        }
+
+        #task-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 10px;
+            overflow: hidden;
+            word-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        .task {
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            color: white;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid none;
+            border-radius: 8px;
+            background-color: grey;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            box-sizing: border-box;
+            white-space: normal;
+            text-overflow: ellipsis;
+            height: 40px;
+            text-align: center;
+        }
+
+        .priority-0 {
+            background-color: grey;
+        }
+
+        .priority-1 {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-container">
+            <label for="task-input">Task:</label>
+            <input type="text" id="task-input" placeholder="Enter task description">
+        </div>
+        <div class="input-container">
+            <label for="priority-select">Priority:</label>
+            <select id="priority-select">
+                <option value="0">Low Priority</option>
+                <option value="1">High Priority</option>
+            </select>
+        </div>
+        <div class="input-container">
+            <button id="add-task">Add Task</button>
+        </div>
+
+        <div class="filter-buttons">
+            <button id="filter-high-priority">Show High Priority</button>
+            <button id="filter-low-priority">Show Low Priority</button>
+            <button id="filter-all">Show All The Tasks</button>
+        </div>
+
+        <div id="task-container"></div>
+    </div>
+
+    <script>
+        let tasks = [
+            { description: "Task 1", priority: 1 },
+            { description: "Task 2", priority: 0 },
+            { description: "Task 3", priority: 1 }
+        ];
+
+        let filteredTasks = tasks;
+
+        // Function to display the tasks
+        function displayTasks() {
+            const container = document.getElementById('task-container');
+            container.innerHTML = ''; 
+
+            filteredTasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = `task priority-${task.priority}`;
+                taskElement.textContent = task.description;
+                container.appendChild(taskElement);
+            });
+        }
+
+        // Add Task Event
+        document.getElementById('add-task').addEventListener('click', function() {
+            const taskInput = document.getElementById('task-input');
+            const prioritySelect = document.getElementById('priority-select');
+            const description = taskInput.value.trim();
+            const priority = parseInt(prioritySelect.value);
+
+            if (description) {
+                tasks.push({ description, priority });
+                filteredTasks = tasks; 
+                displayTasks();
+                taskInput.value = '';
+            }
+        });
+
+        // Filter Tasks
+        document.getElementById('filter-high-priority').addEventListener('click', function() {
+            filteredTasks = tasks.filter(task => task.priority === 1);
+            displayTasks();
+        });
+
+        document.getElementById('filter-low-priority').addEventListener('click', function() {
+            filteredTasks = tasks.filter(task => task.priority === 0);
+            displayTasks();
+        });
+
+        document.getElementById('filter-all').addEventListener('click', function() {
+            filteredTasks = tasks; 
+            displayTasks();
+        });
+
+        displayTasks(); 
+    </script>
+</body>
+</html>

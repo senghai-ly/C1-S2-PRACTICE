@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Display</title>
+    <style>
+        .task {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid none;
+        }
+        .priority-0 {
+            background-color: grey;
+        }
+        .priority-1 {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="task-container"></div>
+
+    <script>
+        let tasks = [
+            { description: "Task 1", priority: 1 },
+            { description: "Task 2", priority: 0 },
+            { description: "Task 3", priority: 1 }
+        ];
+
+        function displayTasks(tasks) {
+            const container = document.getElementById('task-container');
+            container.innerHTML = ''; // Clear previous tasks
+
+            tasks.forEach(task => {
+                const taskElement = document.createElement('div');
+                taskElement.className = `task priority-${task.priority}`;
+                taskElement.textContent = task.description;
+                container.appendChild(taskElement);
+            });
+        }
+
+        displayTasks(tasks);
+    </script>
+</body>
+</html>
